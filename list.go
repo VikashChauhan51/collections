@@ -229,3 +229,31 @@ func (l *List[T]) Set(index int, item T) {
 	}
 	l.collection[index] = item
 }
+
+
+// Iterator represents an iterator for the List.
+type Iterator[T comparable] struct {
+    list  *List[T]
+    index int
+}
+
+// NewIterator creates a new iterator for the List.
+func (l *List[T]) NewIterator() *Iterator[T] {
+    return &Iterator[T]{list: l, index: 0}
+}
+
+// HasNext checks if there are more elements to iterate over.
+func (it *Iterator[T]) HasNext() bool {
+    return it.index < it.list.Count()
+}
+
+// Next returns the next element in the iteration.
+func (it *Iterator[T]) Next() (T, bool) {
+    if it.HasNext() {
+        item := it.list.Get(it.index)
+        it.index++
+        return item, true
+    }
+    var zeroValue T
+    return zeroValue, false
+}

@@ -149,3 +149,82 @@ func TestSet(t *testing.T) {
 	}()
 	list.Set(10, 100)
 }
+
+func TestIterator(t *testing.T) {
+    // Setup
+    list := NewListT(1, 2, 3, 4, 5)
+
+    // Test Iteration
+    iterator := list.NewIterator()
+    expected := []int{1, 2, 3, 4, 5}
+    var result []int
+
+    for iterator.HasNext() {
+        item, ok := iterator.Next()
+        if !ok {
+            t.Fatalf("Expected more items but found none")
+        }
+        result = append(result, item)
+    }
+
+    if len(result) != len(expected) {
+        t.Errorf("Expected %v but got %v", expected, result)
+    }
+
+    for i, v := range expected {
+        if result[i] != v {
+            t.Errorf("Expected %d but got %d at index %d", v, result[i], i)
+        }
+    }
+}
+
+func TestIteratorEmptyList(t *testing.T) {
+    // Setup
+    list := NewList[int]()
+
+    // Test Iteration on an empty list
+    iterator := list.NewIterator()
+
+    if iterator.HasNext() {
+        t.Error("Expected no items but found some")
+    }
+
+    item, ok := iterator.Next()
+    if ok {
+        t.Errorf("Expected no item but got %d", item)
+    }
+}
+
+func TestIteratorAfterModification(t *testing.T) {
+    // Setup
+    list := NewListT(1, 2, 3, 4, 5)
+    iterator := list.NewIterator()
+
+    // Remove some elements
+    list.Remove(2)
+    list.Remove(4)
+
+    // Re-initialize iterator
+    iterator = list.NewIterator()
+
+    expected := []int{1, 3, 5}
+    var result []int
+
+    for iterator.HasNext() {
+        item, ok := iterator.Next()
+        if !ok {
+            t.Fatalf("Expected more items but found none")
+        }
+        result = append(result, item)
+    }
+
+    if len(result) != len(expected) {
+        t.Errorf("Expected %v but got %v", expected, result)
+    }
+
+    for i, v := range expected {
+        if result[i] != v {
+            t.Errorf("Expected %d but got %d at index %d", v, result[i], i)
+        }
+    }
+}
