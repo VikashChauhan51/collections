@@ -1,6 +1,7 @@
 package concurrent
 
 import (
+	"strconv"
 	"sync"
 	"testing"
 )
@@ -14,7 +15,8 @@ func TestConcurrentDict(t *testing.T) {
         wg.Add(1)
         go func(i int) {
             defer wg.Done()
-            dict.Set(string(i), i)
+            key := strconv.Itoa(i) // Use strconv to convert int to string
+            dict.Set(key, i)
         }(i)
     }
 
@@ -22,7 +24,8 @@ func TestConcurrentDict(t *testing.T) {
 
     // Verify all keys are present
     for i := 0; i < 100; i++ {
-        value, ok := dict.Get(string(i))
+        key := strconv.Itoa(i) // Use strconv to convert int to string
+        value, ok := dict.Get(key)
         if !ok || value != i {
             t.Errorf("Expected %d for key %d but got %v", i, i, value)
         }
@@ -32,7 +35,8 @@ func TestConcurrentDict(t *testing.T) {
 func TestConcurrentDictDeletion(t *testing.T) {
     dict := NewConcurrentDict[string, int]()
     for i := 0; i < 100; i++ {
-        dict.Set(string(i), i)
+        key := strconv.Itoa(i) // Use strconv to convert int to string
+        dict.Set(key, i)
     }
 
     var wg sync.WaitGroup
@@ -42,7 +46,8 @@ func TestConcurrentDictDeletion(t *testing.T) {
         wg.Add(1)
         go func(i int) {
             defer wg.Done()
-            dict.Delete(string(i))
+            key := strconv.Itoa(i) // Use strconv to convert int to string
+            dict.Delete(key)
         }(i)
     }
 
@@ -50,7 +55,8 @@ func TestConcurrentDictDeletion(t *testing.T) {
 
     // Verify that some keys are deleted
     for i := 0; i < 50; i++ {
-        _, ok := dict.Get(string(i))
+        key := strconv.Itoa(i) // Use strconv to convert int to string
+        _, ok := dict.Get(key)
         if ok {
             t.Errorf("Key %d was expected to be deleted but was found", i)
         }
@@ -58,7 +64,8 @@ func TestConcurrentDictDeletion(t *testing.T) {
 
     // Verify remaining keys
     for i := 50; i < 100; i++ {
-        value, ok := dict.Get(string(i))
+        key := strconv.Itoa(i) // Use strconv to convert int to string
+        value, ok := dict.Get(key)
         if !ok || value != i {
             t.Errorf("Expected %d for key %d but got %v", i, i, value)
         }
