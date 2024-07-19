@@ -1,6 +1,3 @@
-Here's the updated README with sections for `List`, `Dictionary`, and `HashSet`:
-
----
 
 # Collections Package
 
