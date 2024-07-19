@@ -8,6 +8,8 @@ The `collections` package provides generic data structures in Go, including a `L
 - **Generic List:** Holds a collection of items of any comparable type with methods for adding, removing, and accessing items.
 - **Generic Dictionary:** A map-like data structure that associates keys with values, with methods for adding, retrieving, and removing key-value pairs.
 - **Generic HashSet:** A set-like data structure that holds unique items and provides methods for adding, removing, and checking membership.
+- **Concurrent List:** A thread-safe version of the List for concurrent use.
+- **Concurrent Dictionary:** A thread-safe version of the Dictionary for concurrent use.
 
 ## Installation
 
