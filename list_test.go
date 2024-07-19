@@ -19,7 +19,22 @@ func Test_ListWithData(t *testing.T) {
 
 	list := NewListT(1, 2, 3, 4, 5, 6)
 
-	if list == nil {
+	if list.Count() != 6 {
+		t.Error("invaid collection")
+	}
+	fmt.Println(list)
+}
+
+func Test_RemoveItem(t *testing.T) {
+	list := NewListT(1, 2, 3, 4, 5, 6)
+
+	if list.Count() != 6 {
+		t.Error("invaid collection")
+	}
+	fmt.Println(list)
+	list.Remove(2)
+
+	if list.Count() != 5 {
 		t.Error("invaid collection")
 	}
 	fmt.Println(list)
