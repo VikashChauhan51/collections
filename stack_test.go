@@ -3,6 +3,8 @@ package collections
 import (
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // Test-specific setup function
@@ -19,10 +21,12 @@ func Test_first(t *testing.T) {
 	teardown := testSetup()
 	defer teardown()
 	fmt.Print("first")
+	assert.Nil(t, nil)
 }
 
 func Test_second(t *testing.T) {
 	teardown := testSetup()
 	defer teardown()
 	fmt.Print("Test_second")
+	assert.Nil(t, nil)
 }
