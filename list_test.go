@@ -3,7 +3,7 @@ package collections
 import "testing"
 
 // TestNewList tests the NewList function.
-func TestNewList(t *testing.T) {
+func TestList_NewList(t *testing.T) {
 	list := NewList[int]()
 	if list.Count() != 0 {
 		t.Errorf("Expected empty list, got count %d", list.Count())
@@ -11,7 +11,7 @@ func TestNewList(t *testing.T) {
 }
 
 // TestNewListT tests the NewListT function with initial items.
-func TestNewListT(t *testing.T) {
+func TestList_NewListT(t *testing.T) {
 	list := NewListT(1, 2, 3, 4, 5)
 	if list.Count() != 5 {
 		t.Errorf("Expected list with 5 items, got count %d", list.Count())
@@ -22,7 +22,7 @@ func TestNewListT(t *testing.T) {
 }
 
 // TestAdd tests the Add method.
-func TestAdd(t *testing.T) {
+func TestList_Add(t *testing.T) {
 	list := NewList[int]()
 	list.Add(1)
 	list.Add(2)
@@ -35,7 +35,7 @@ func TestAdd(t *testing.T) {
 }
 
 // TestAddRange tests the AddRange method.
-func TestAddRange(t *testing.T) {
+func TestList_AddRange(t *testing.T) {
 	list := NewList[int]()
 	list.AddRange([]int{1, 2, 3})
 	if list.Count() != 3 {
@@ -47,7 +47,7 @@ func TestAddRange(t *testing.T) {
 }
 
 // TestGet tests the Get method.
-func TestGet(t *testing.T) {
+func TestList_Get(t *testing.T) {
 	list := NewListT(1, 2, 3)
 	if item := list.Get(1); item != 2 {
 		t.Errorf("Expected item 2, got %d", item)
@@ -55,7 +55,7 @@ func TestGet(t *testing.T) {
 }
 
 // TestGetIndex tests the GetIndex method.
-func TestGetIndex(t *testing.T) {
+func TestList_GetIndex(t *testing.T) {
 	list := NewListT(1, 2, 3)
 	if index := list.GetIndex(2); index != 1 {
 		t.Errorf("Expected index 1, got %d", index)
@@ -66,7 +66,7 @@ func TestGetIndex(t *testing.T) {
 }
 
 // TestRemove tests the Remove method.
-func TestRemove(t *testing.T) {
+func TestList_Remove(t *testing.T) {
 	list := NewListT(1, 2, 3)
 	if removed := list.Remove(2); !removed {
 		t.Error("Expected item 2 to be removed")
@@ -80,7 +80,7 @@ func TestRemove(t *testing.T) {
 }
 
 // TestRemoveAt tests the RemoveAt method.
-func TestRemoveAt(t *testing.T) {
+func TestList_RemoveAt(t *testing.T) {
 	list := NewListT(1, 2, 3)
 	list.RemoveAt(1)
 	if list.Count() != 2 {
@@ -92,7 +92,7 @@ func TestRemoveAt(t *testing.T) {
 }
 
 // TestFilter tests the Filter method.
-func TestFilter(t *testing.T) {
+func TestList_Filter(t *testing.T) {
 	list := NewListT(1, 2, 3, 4, 5)
 	evenNumbers := list.Filter(func(item int) bool { return item%2 == 0 })
 	if len(evenNumbers) != 2 || evenNumbers[0] != 2 || evenNumbers[1] != 4 {
@@ -101,7 +101,7 @@ func TestFilter(t *testing.T) {
 }
 
 // TestFirstOrDefault tests the FirstOrDefault method.
-func TestFirstOrDefault(t *testing.T) {
+func TestList_FirstOrDefault(t *testing.T) {
 	list := NewListT(1, 2, 3, 4, 5)
 	firstEven := list.FirstOrDefault(func(item int) bool { return item%2 == 0 })
 	if firstEven != 2 {
@@ -110,7 +110,7 @@ func TestFirstOrDefault(t *testing.T) {
 }
 
 // TestLastOrDefault tests the LastOrDefault method.
-func TestLastOrDefault(t *testing.T) {
+func TestList_LastOrDefault(t *testing.T) {
 	list := NewListT(1, 2, 3, 4, 5)
 	lastEven := list.LastOrDefault(func(item int) bool { return item%2 == 0 })
 	if lastEven != 4 {
@@ -119,7 +119,7 @@ func TestLastOrDefault(t *testing.T) {
 }
 
 // TestSingleOrDefault tests the SingleOrDefault method.
-func TestSingleOrDefault(t *testing.T) {
+func TestList_SingleOrDefault(t *testing.T) {
 	list := NewListT(1, 2, 3)
 	singleEven := list.SingleOrDefault(func(item int) bool { return item == 2 })
 	if singleEven != 2 {
@@ -135,7 +135,7 @@ func TestSingleOrDefault(t *testing.T) {
 }
 
 // TestSet tests the Set method.
-func TestSet(t *testing.T) {
+func TestList_Set(t *testing.T) {
 	list := NewListT(1, 2, 3)
 	list.Set(1, 10)
 	if item := list.Get(1); item != 10 {
@@ -150,81 +150,81 @@ func TestSet(t *testing.T) {
 	list.Set(10, 100)
 }
 
-func TestIterator(t *testing.T) {
-    // Setup
-    list := NewListT(1, 2, 3, 4, 5)
+func TestList_Iterator(t *testing.T) {
+	// Setup
+	list := NewListT(1, 2, 3, 4, 5)
 
-    // Test Iteration
-    iterator := list.NewIterator()
-    expected := []int{1, 2, 3, 4, 5}
-    var result []int
+	// Test Iteration
+	iterator := list.NewIterator()
+	expected := []int{1, 2, 3, 4, 5}
+	var result []int
 
-    for iterator.HasNext() {
-        item, ok := iterator.Next()
-        if !ok {
-            t.Fatalf("Expected more items but found none")
-        }
-        result = append(result, item)
-    }
+	for iterator.HasNext() {
+		item, ok := iterator.Next()
+		if !ok {
+			t.Fatalf("Expected more items but found none")
+		}
+		result = append(result, item)
+	}
 
-    if len(result) != len(expected) {
-        t.Errorf("Expected %v but got %v", expected, result)
-    }
+	if len(result) != len(expected) {
+		t.Errorf("Expected %v but got %v", expected, result)
+	}
 
-    for i, v := range expected {
-        if result[i] != v {
-            t.Errorf("Expected %d but got %d at index %d", v, result[i], i)
-        }
-    }
+	for i, v := range expected {
+		if result[i] != v {
+			t.Errorf("Expected %d but got %d at index %d", v, result[i], i)
+		}
+	}
 }
 
-func TestIteratorEmptyList(t *testing.T) {
-    // Setup
-    list := NewList[int]()
+func TestList_IteratorEmptyList(t *testing.T) {
+	// Setup
+	list := NewList[int]()
 
-    // Test Iteration on an empty list
-    iterator := list.NewIterator()
+	// Test Iteration on an empty list
+	iterator := list.NewIterator()
 
-    if iterator.HasNext() {
-        t.Error("Expected no items but found some")
-    }
+	if iterator.HasNext() {
+		t.Error("Expected no items but found some")
+	}
 
-    item, ok := iterator.Next()
-    if ok {
-        t.Errorf("Expected no item but got %d", item)
-    }
+	item, ok := iterator.Next()
+	if ok {
+		t.Errorf("Expected no item but got %d", item)
+	}
 }
 
-func TestIteratorAfterModification(t *testing.T) {
-    // Setup
-    list := NewListT(1, 2, 3, 4, 5)
-    iterator := list.NewIterator()
+func TestList_IteratorAfterModification(t *testing.T) {
+	// Setup
+	list := NewListT(1, 2, 3, 4, 5)
+	iterator := list.NewIterator()
 
-    // Remove some elements
-    list.Remove(2)
-    list.Remove(4)
+	// Remove some elements
+	list.Remove(2)
+	list.Remove(4)
 
-    // Re-initialize iterator
-    iterator = list.NewIterator()
+	// Re-initialize iterator
+	iterator = list.NewIterator()
 
-    expected := []int{1, 3, 5}
-    var result []int
+	expected := []int{1, 3, 5}
+	var result []int
 
-    for iterator.HasNext() {
-        item, ok := iterator.Next()
-        if !ok {
-            t.Fatalf("Expected more items but found none")
-        }
-        result = append(result, item)
-    }
+	for iterator.HasNext() {
+		item, ok := iterator.Next()
+		if !ok {
+			t.Fatalf("Expected more items but found none")
+		}
+		result = append(result, item)
+	}
 
-    if len(result) != len(expected) {
-        t.Errorf("Expected %v but got %v", expected, result)
-    }
+	if len(result) != len(expected) {
+		t.Errorf("Expected %v but got %v", expected, result)
+	}
 
-    for i, v := range expected {
-        if result[i] != v {
-            t.Errorf("Expected %d but got %d at index %d", v, result[i], i)
-        }
-    }
+	for i, v := range expected {
+		if result[i] != v {
+			t.Errorf("Expected %d but got %d at index %d", v, result[i], i)
+		}
+	}
 }
