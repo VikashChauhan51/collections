@@ -166,6 +166,22 @@ func (l *List[T]) Filter(predicate func(T) bool) []T {
 	return results
 }
 
+// First returns the first item that matches the predicate.
+// If no item matches, it will panic.
+//
+// Example:
+//  list := NewListT(1, 2, 3, 4, 5)
+//  firstEven := list.First(func(item int) bool { return item%2 == 0 })
+//  fmt.Println(firstEven) // Output: 2
+func (l *List[T]) First(predicate func(T) bool) T {
+	for _, val := range l.collection {
+		if predicate(val) {
+			return val
+		}
+	}
+	panic("Sequence contains no element.")
+}
+
 // FirstOrDefault returns the first item that matches the predicate.
 // If no item matches, it returns the zero value of the type.
 //
@@ -223,6 +239,32 @@ func (l *List[T]) SingleOrDefault(predicate func(T) bool) T {
 		}
 	}
 
+	return result
+}
+
+// Single returns the single item that matches the predicate.
+// If no item or more than one item matches, it panics.
+//
+// Example:
+//  list := NewListT(1, 2, 3, 4, 5)
+//  singleEven := list.Single(func(item int) bool { return item == 2 })
+//  fmt.Println(singleEven) // Output: 2
+func (l *List[T]) Single(predicate func(T) bool) T {
+	var result T
+	count := 0
+	for _, val := range l.collection {
+		if predicate(val) {
+			if count == 0 {
+				result = val
+				count++
+			} else {
+				panic("Sequence contains more than one matching element.")
+			}
+		}
+	}
+	if count == 0 {
+		panic("Sequence contains no element.")
+	}
 	return result
 }
 
