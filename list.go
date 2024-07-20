@@ -1,5 +1,7 @@
 package collections
 
+import "sort"
+
 // List is a generic type that holds a collection of items of any comparable type.
 type List[T comparable] struct {
 	collection []T
@@ -140,6 +142,13 @@ func (l *List[T]) RemoveAt(index int) {
 	l.collection = append(l.collection[:index], l.collection[index+1:]...)
 }
 
+// OrderBy sorts the list using the provided less function
+func (l *List[T]) OrderBy(less func(i, j T) bool) {
+	sort.Slice(l.collection, func(i, j int) bool {
+		return less(l.collection[i], l.collection[j])
+	})
+}
+
 // Filter returns a new slice containing all items that match the predicate.
 //
 // Example:
@@ -230,30 +239,29 @@ func (l *List[T]) Set(index int, item T) {
 	l.collection[index] = item
 }
 
-
 // Iterator represents an iterator for the List.
 type Iterator[T comparable] struct {
-    list  *List[T]
-    index int
+	list  *List[T]
+	index int
 }
 
 // NewIterator creates a new iterator for the List.
 func (l *List[T]) NewIterator() *Iterator[T] {
-    return &Iterator[T]{list: l, index: 0}
+	return &Iterator[T]{list: l, index: 0}
 }
 
 // HasNext checks if there are more elements to iterate over.
 func (it *Iterator[T]) HasNext() bool {
-    return it.index < it.list.Count()
+	return it.index < it.list.Count()
 }
 
 // Next returns the next element in the iteration.
 func (it *Iterator[T]) Next() (T, bool) {
-    if it.HasNext() {
-        item := it.list.Get(it.index)
-        it.index++
-        return item, true
-    }
-    var zeroValue T
-    return zeroValue, false
+	if it.HasNext() {
+		item := it.list.Get(it.index)
+		it.index++
+		return item, true
+	}
+	var zeroValue T
+	return zeroValue, false
 }
