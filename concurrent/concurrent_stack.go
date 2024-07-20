@@ -9,8 +9,8 @@ type ConcurrentStack[T any] struct {
 }
 
 // NewConcurrentStack creates a new instance of a Stack.
-func NewConcurrentStack[T any]() *Stack[T] {
-	return &Stack[T]{}
+func NewConcurrentStack[T any]() *ConcurrentStack[T] {
+	return &ConcurrentStack[T]{}
 }
 
 // Push adds an element to the top of the ConcurrentStack.
