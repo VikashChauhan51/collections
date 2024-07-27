@@ -1,4 +1,4 @@
-
+[![Go Reference](https://pkg.go.dev/badge/github.com/VikashChauhan51/collections.svg)](https://pkg.go.dev/github.com/VikashChauhan51/collections)
 # Collections Package
 
 The `collections` package provides generic data structures in Go, including a `List`, a `Dictionary`, and a `HashSet`. These types offer various functionalities for managing collections of items in a type-safe and efficient manner.
